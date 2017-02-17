@@ -3,12 +3,26 @@ import java.util.regex.Pattern
 
 def getCurrentFlavor() {
     Gradle gradle = getGradle()
-    String tskReqStr = gradle.getStartParameter().getTaskRequests()[0].args
+    String  tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
 
-    Matcher matcher = Pattern.compile("([A-Z]\\w+)").matcher( tskReqStr )
-    if( matcher.find() ) {
-        return matcher.group(1).toLowerCase()
-    } else {
+    Pattern pattern;
+
+    if( tskReqStr.contains( "assemble" ) )
+        pattern = Pattern.compile("assemble(\\w+)(Release|Debug)")
+    else
+        pattern = Pattern.compile("generate(\\w+)(Release|Debug)")
+
+    Matcher matcher = pattern.matcher( tskReqStr )
+
+    if( matcher.find() )
+    {
+        String currentFlavor = matcher.group(1).toLowerCase()
+        println "Found current flavor: " + currentFlavor
+        return currentFlavor
+    }
+    else
+    {
+        println "NO MATCH FOUND"
         return "";
     }
 }
