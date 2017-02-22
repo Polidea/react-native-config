@@ -9,6 +9,8 @@ def getCurrentFlavor() {
 
     if( tskReqStr.contains( "assemble" ) )
         pattern = Pattern.compile("assemble(\\w+)(Release|Debug)")
+    else if ( tskReqStr.contains( "install" ))
+        pattern = Pattern.compile("install(\\w+)(Release|Debug)")
     else
         pattern = Pattern.compile("generate(\\w+)(Release|Debug)")
 
